@@ -22,6 +22,7 @@ setup(
         'console_scripts': [
             'teleop = warmup_project.teleop:main',
             'drive_square = warmup_project.drive_square:main',
+            'wall_follow = warmup_project.wall_follow:main',
         ],
     },
 )
