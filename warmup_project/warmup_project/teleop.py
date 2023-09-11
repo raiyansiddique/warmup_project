@@ -76,7 +76,6 @@ class EStop(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = EStop()
-
     key = None
     while key != '\x03':
         key = getKey()
@@ -94,7 +93,7 @@ def main(args=None):
         elif key == 'f':
             node.stop()
         time.sleep(0.05)
-
+    node.stop()
     rclpy.shutdown()
 
 if __name__ == '__main__':
