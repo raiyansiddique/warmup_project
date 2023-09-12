@@ -1,0 +1,6 @@
+[console_scripts]
+drive_square = warmup_project.drive_square:main
+person_follower = warmup_project.person_follower:main
+teleop = warmup_project.teleop:main
+wall_follow = warmup_project.wall_follow:main
+

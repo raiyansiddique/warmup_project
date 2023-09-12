@@ -1,0 +1,54 @@
+[0.606s] Invoking command in '/home/satchel/ros2_ws/src/warmup_project/warmup_project': PYTHONPATH=/home/satchel/ros2_ws/src/warmup_project/build/warmup_project/prefix_override:/home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/warmup_project build --build-base /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build install --record /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/install.log --single-version-externally-managed
+[0.861s] running egg_info
+[0.861s] creating ../build/warmup_project/warmup_project.egg-info
+[0.862s] writing ../build/warmup_project/warmup_project.egg-info/PKG-INFO
+[0.862s] writing dependency_links to ../build/warmup_project/warmup_project.egg-info/dependency_links.txt
+[0.862s] writing entry points to ../build/warmup_project/warmup_project.egg-info/entry_points.txt
+[0.862s] writing requirements to ../build/warmup_project/warmup_project.egg-info/requires.txt
+[0.862s] writing top-level names to ../build/warmup_project/warmup_project.egg-info/top_level.txt
+[0.862s] writing manifest file '../build/warmup_project/warmup_project.egg-info/SOURCES.txt'
+[0.864s] reading manifest file '../build/warmup_project/warmup_project.egg-info/SOURCES.txt'
+[0.864s] writing manifest file '../build/warmup_project/warmup_project.egg-info/SOURCES.txt'
+[0.864s] running build
+[0.864s] running build_py
+[0.865s] creating /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build
+[0.865s] creating /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib
+[0.865s] creating /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project
+[0.865s] copying warmup_project/drive_square_odom_failed.py -> /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project
+[0.865s] copying warmup_project/__init__.py -> /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project
+[0.865s] copying warmup_project/person_follower.py -> /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project
+[0.865s] copying warmup_project/drive_square.py -> /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project
+[0.865s] copying warmup_project/wall_follow.py -> /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project
+[0.866s] copying warmup_project/teleop.py -> /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project
+[0.866s] running install
+[0.866s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[0.866s]   warnings.warn(
+[0.866s] running install_lib
+[0.867s] creating /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project
+[0.867s] copying /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project/drive_square_odom_failed.py -> /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project
+[0.867s] copying /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project/__init__.py -> /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project
+[0.867s] copying /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project/person_follower.py -> /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project
+[0.867s] copying /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project/drive_square.py -> /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project
+[0.867s] copying /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project/wall_follow.py -> /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project
+[0.867s] copying /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build/lib/warmup_project/teleop.py -> /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project
+[0.868s] byte-compiling /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project/drive_square_odom_failed.py to drive_square_odom_failed.cpython-310.pyc
+[0.868s] byte-compiling /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project/__init__.py to __init__.cpython-310.pyc
+[0.869s] byte-compiling /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project/person_follower.py to person_follower.cpython-310.pyc
+[0.869s] byte-compiling /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project/drive_square.py to drive_square.cpython-310.pyc
+[0.870s] byte-compiling /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project/wall_follow.py to wall_follow.cpython-310.pyc
+[0.870s] byte-compiling /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project/teleop.py to teleop.cpython-310.pyc
+[0.871s] running install_data
+[0.871s] creating /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/share/ament_index
+[0.871s] creating /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/share/ament_index/resource_index
+[0.872s] creating /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/share/ament_index/resource_index/packages
+[0.872s] copying resource/warmup_project -> /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/share/ament_index/resource_index/packages
+[0.872s] copying package.xml -> /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/share/warmup_project
+[0.872s] running install_egg_info
+[0.873s] Copying ../build/warmup_project/warmup_project.egg-info to /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages/warmup_project-0.0.0-py3.10.egg-info
+[0.874s] running install_scripts
+[0.895s] Installing drive_square script to /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/warmup_project
+[0.895s] Installing person_follower script to /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/warmup_project
+[0.895s] Installing teleop script to /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/warmup_project
+[0.895s] Installing wall_follow script to /home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/warmup_project
+[0.895s] writing list of installed files to '/home/satchel/ros2_ws/src/warmup_project/build/warmup_project/install.log'
+[0.917s] Invoked command in '/home/satchel/ros2_ws/src/warmup_project/warmup_project' returned '0': PYTHONPATH=/home/satchel/ros2_ws/src/warmup_project/build/warmup_project/prefix_override:/home/satchel/ros2_ws/src/warmup_project/install/warmup_project/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/warmup_project build --build-base /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/build install --record /home/satchel/ros2_ws/src/warmup_project/build/warmup_project/install.log --single-version-externally-managed

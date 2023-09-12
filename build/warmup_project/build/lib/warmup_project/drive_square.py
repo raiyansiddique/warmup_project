@@ -16,8 +16,6 @@ class EStop(Node):
         self.angular_vel = 3.14/4 * 1.035
     def square(self):
         count = 0
-        self.publisher.publish(Twist())
-        time.sleep(2)
         while count < 4:
             if self.state == 0:
                 twist = Twist()

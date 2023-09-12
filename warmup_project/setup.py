@@ -23,6 +23,7 @@ setup(
             'teleop = warmup_project.teleop:main',
             'drive_square = warmup_project.drive_square:main',
             'wall_follow = warmup_project.wall_follow:main',
+            'person_follower = warmup_project.person_follower:main',
         ],
     },
 )
