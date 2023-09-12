@@ -24,17 +24,16 @@ class WallApproachNode(Node):
         self.Kp = 0.4
         # target_distance is the desired distance to the obstacle in front
         self.target_distance = 1.2
-        self.state = 0
+        self.state = 1
     def run_loop(self):
         msg = Twist()
+        print(self.state)
 
         if self.state == 1:
             self.forward()
         elif self.state == 2:
-            self.forward()
-        elif self.state == 3:
             self.left()
-        elif self.state == 4:
+        elif self.state == 3:
             self.right()
 
         # Your logic here!
@@ -51,7 +50,7 @@ class WallApproachNode(Node):
 
     def right(self):
         twist = Twist()
-        twist.linear.x = 0.0
+        twist.linear.x = 0.2
         twist.linear.y = 0.0
         twist.linear.z = 0.0
         twist.angular.x = 0.0
@@ -61,7 +60,7 @@ class WallApproachNode(Node):
 
     def left(self):
         twist = Twist()
-        twist.linear.x = 0.0
+        twist.linear.x = 0.2
         twist.linear.y = 0.0
         twist.linear.z = 0.0
         twist.angular.x = 0.0
@@ -76,24 +75,25 @@ class WallApproachNode(Node):
     def process_scan(self, msg):
         left_low = 45
         left_high = 135
-        right_low  = 225
-        right_high = 315
+        left = 90
+
+        #state 1 = straight
+        #state 2 = left
+        #state 3 = right
 
         ranges_var = msg.ranges
         if ranges_var[left_low] != 0 and ranges_var[left_high] != 0:
             if ranges_var[left_low] - ranges_var[left_high] > 0.05:
                 self.state = 3
             elif ranges_var[left_low] - ranges_var[left_high] < -0.05:
-                self.state = 4
+                self.state = 2
             else:
                 self.state = 1
-        elif ranges_var[right_low] != 0 and ranges_var[right_high] != 0:
-            if ranges_var[right_low] - ranges_var[right_high] > 0.05:
-                self.state = 4
-            elif ranges_var[right_low] - ranges_var[right_high] < -0.05:
-                self.state = 3
-            else:
-                self.state = 2
+            
+            # if ranges_var[left] < 0.1:
+            #     self.state = 3
+            # elif ranges_var[left] > 0.2:
+            #     self.state = 2
 
         
 
