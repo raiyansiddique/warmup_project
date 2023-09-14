@@ -24,6 +24,7 @@ setup(
             'drive_square = warmup_project.drive_square:main',
             'wall_follow = warmup_project.wall_follow:main',
             'person_follower = warmup_project.person_follower:main',
+            'obstacle_avoidance = warmup_project.obstacle_avoidance:main',
         ],
     },
 )
