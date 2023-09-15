@@ -2,34 +2,32 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
-from rclpy.parameter import Parameter
-from rcl_interfaces.msg import SetParametersResult
 from rclpy.qos import qos_profile_sensor_data
-import time
-# 1 = Wall Left
-# 2 = Wall Right
-# 3 = Rotate to Left Wall
-# 4 = Rotate to Right Wall
-class ObstacleAvoid(Node):
-    """ This class wraps the basic functionality of the node """
-    def __init__(self):
-        super().__init__('wall_approach')
-        # the run_loop adjusts the robot's velocity based on latest laser data
-        self.create_timer(0.1, self.run_loop)
-        self.create_subscription(LaserScan, 'scan', self.process_scan, qos_profile=qos_profile_sensor_data)
-        self.publisher = self.create_publisher(Twist, 'cmd_vel', 10)
-        # distance_to_obstacle is used to communciate laser data to run_loop
-        self.distance_to_obstacle = None
-        # Kp is the constant or to apply to the proportional error signal
-        self.Kp = 0.4
-        # target_distance is the desired distance to the obstacle in front
-        self.target_distance = 1.2
-        self.angular_vel = 3.14/4 * 1.035
-        self.state = 1
-    def run_loop(self):
-        msg = Twist()
-        # print(self.state)
 
+class ObstacleAvoid(Node):
+    """
+    Class for Obstacle Avoidance using ROS
+    """
+    def __init__(self):
+        super().__init__('Obstacle Avoid')
+        # The run_loop adjusts the robot's velocity based on latest laser data
+        self.create_timer(0.1, self.run_loop)
+        #Subscribes to the lidar scan topic
+        self.create_subscription(LaserScan, 'scan', self.process_scan, qos_profile=qos_profile_sensor_data)
+        #Sets up publisher to cmd_vel 
+        self.publisher = self.create_publisher(Twist, 'cmd_vel', 10)
+        #Sets angular velocity to pi/4 rads per second with a scaling factor
+        self.angular_vel = 3.14/4 * 1.035
+        #Sets the initial state to 1
+        self.state = 1
+    
+    def run_loop(self):
+        '''
+        Using the state, drive the robot one of 3 directions
+        1: Forward
+        2: Rotate Left
+        3: Rotate Right
+        '''
         if self.state == 1:
             self.forward()
         elif self.state == 2:
@@ -37,9 +35,10 @@ class ObstacleAvoid(Node):
         elif self.state == 3:
             self.right()
 
-        # Your logic here!
-
     def forward(self):
+        '''
+        Sets the robot's forward velocity to 0.2 m/s
+        '''
         twist = Twist()
         twist.linear.x = 0.2
         twist.linear.y = 0.0
@@ -50,6 +49,9 @@ class ObstacleAvoid(Node):
         self.publisher.publish(twist)
 
     def right(self):
+        '''
+        Sets robot to rotate right
+        '''
         twist = Twist()
         twist.linear.x = 0.0
         twist.linear.y = 0.0
@@ -59,6 +61,9 @@ class ObstacleAvoid(Node):
         twist.angular.z = self.angular_vel
         self.publisher.publish(twist)
     def left(self):
+        '''
+        Sets robot to rotate left
+        '''
         twist = Twist()
         twist.linear.x = 0.0
         twist.linear.y = 0.0
@@ -67,18 +72,25 @@ class ObstacleAvoid(Node):
         twist.angular.y = 0.0
         twist.angular.z = -self.angular_vel
         self.publisher.publish(twist)
-
-
-        # self.vel_pub.publish(msg)
         
 
     def process_scan(self, msg):
+        '''
+        Controller for state machine defined in run_loop
 
+        Args:
+            msg: Topic message for lidar scan
+        '''
+        # extracts the distances away the neato is from some object at each angle
         ranges_var = msg.ranges
+        #Finds the angle where there is something closest to the neato, excluding 0s
         ranges_min_value = min([num for num in ranges_var if num != 0])
+        #The minimum index gives us the angle at which the object closest is.
         min_index = ranges_var.index(ranges_min_value)
-        print(min_index)
+        #If something is 0.7 meters or closer then it should see if it needs to rotate
+        #Else go forward
         if ranges_min_value < 0.7:
+            #If the object is in the front of the neato then rotate left else move forward
             if min_index >= 0 and min_index <= 90:
                 self.state = 2
             elif min_index >= 270 and min_index <= 360:
@@ -87,11 +99,6 @@ class ObstacleAvoid(Node):
                 self.state = 1
         else: 
             self.state = 1
-
-            # if ranges_var[left] < 0.1:
-            #     self.state = 3
-            # elif ranges_var[left] > 0.2:
-            #     self.state = 2
 
         
 
