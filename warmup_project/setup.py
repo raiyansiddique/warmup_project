@@ -25,6 +25,7 @@ setup(
             'wall_follow = warmup_project.wall_follow:main',
             'person_follower = warmup_project.person_follower:main',
             'obstacle_avoidance = warmup_project.obstacle_avoidance:main',
+            'finite_state_control = warmup_project.finite_state_control:main',
         ],
     },
 )
