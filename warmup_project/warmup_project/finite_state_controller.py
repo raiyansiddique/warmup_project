@@ -23,7 +23,6 @@ class FiniteStateController(Node):
         # Kp is the constant or to apply to the proportional error signal
         self.Kp = 0.4
         # target_distance is the desired distance to the obstacle in front
-        self.target_distance = 1.2
         self.angular_vel = 3.14/4 * 1.035
         self.state = 1
     def run_loop(self):
@@ -102,18 +101,19 @@ class FiniteStateController(Node):
         ranges_min_value = min([num for num in ranges_var if num != 0])
         min_index = ranges_var.index(ranges_min_value)
         print(min_index)
-        if ranges_min_value > 0.05:
-            if min_index >= 15 and min_index <= 180:
-                self.state = 3
-            elif min_index >= 181 and min_index <= 345:
-                self.state = 2
-            else:
-                self.state = 1
-        else:
+        print(ranges_min_value)
+        if ranges_min_value < 0.8:
             if min_index >= 0 and min_index <= 90:
                 self.state = 5
             elif min_index >= 270 and min_index <= 360:
                 self.state = 5
+            else:
+                self.state = 1
+        else:
+            if min_index >= 15 and min_index <= 180:
+                self.state = 3
+            elif min_index >= 181 and min_index <= 345:
+                self.state = 2
             else:
                 self.state = 1
 
