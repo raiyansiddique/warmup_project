@@ -17,4 +17,4 @@ The wall following logic is fairly simple. If both the 45 and 135 degree measure
 
 ## Person Follower 
 
-For the person follower problem, we are tasked 
+For the person follower problem, we are tasked with having the Neato follow a person. Our approach is fairly simple, we have the Neato follow the closest object that is not 0.1 meters away. If the nearest object is 0.1 meters or closer, then the Neato will stop. If the person is not directly in front of the neato the neato will try to 

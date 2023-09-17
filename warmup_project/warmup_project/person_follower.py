@@ -28,6 +28,8 @@ class PersonFollowing(Node):
             self.left()
         elif self.state == 3:
             self.right()
+        else:
+            self.stop()
 
     def forward(self):
         '''
@@ -67,7 +69,19 @@ class PersonFollowing(Node):
         twist.angular.y = 0.0
         twist.angular.z = -0.2
         self.publisher.publish(twist)
-        
+
+    def stop(self):
+        '''
+        Stops the robot
+        '''
+        twist = Twist()
+        twist.linear.x = 0.0
+        twist.linear.y = 0.0
+        twist.linear.z = 0.0
+        twist.angular.x = 0.0
+        twist.angular.y = 0.0
+        twist.angular.z = 0.0
+        self.publisher.publish(twist)        
 
     def process_scan(self, msg):
         '''
@@ -83,13 +97,16 @@ class PersonFollowing(Node):
         #Finds the angle at which the minimum value is at
         min_index = ranges_var.index(ranges_min_value)
         #If the person is to the right of the neato rotate and move forward right
-        if min_index >= 15 and min_index <= 180:
-            self.state = 3
-        #If the person is to the left of the neato rotate and move forward left
-        elif min_index >= 181 and min_index <= 345:
-            self.state = 2
-        else:
-            self.state = 1
+        if ranges_min_value < 0.1:
+            self.state = 4
+        else: 
+            if min_index >= 15 and min_index <= 180:
+                self.state = 3
+            #If the person is to the left of the neato rotate and move forward left
+            elif min_index >= 181 and min_index <= 345:
+                self.state = 2
+            else:
+                self.state = 1
 
 
 def main(args=None):
