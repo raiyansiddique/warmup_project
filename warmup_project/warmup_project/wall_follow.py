@@ -3,7 +3,9 @@ from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 from rclpy.qos import qos_profile_sensor_data
-
+from visualization_msgs.msg import Marker
+import math
+from geometry_msgs.msg import Point
 
 class WallFollowing(Node):
     """ Class for WallFollowing for the Neato"""
@@ -13,6 +15,7 @@ class WallFollowing(Node):
         self.create_timer(0.1, self.run_loop)
         #Subscribe to the lidar scan topic
         self.create_subscription(LaserScan, 'scan', self.process_scan, qos_profile=qos_profile_sensor_data)
+        self.marker_publisher = self.create_publisher(Marker, 'wall_marker', 10)
         self.publisher = self.create_publisher(Twist, 'cmd_vel', 10)
         self.state = 1
     def run_loop(self):
@@ -68,6 +71,20 @@ class WallFollowing(Node):
         twist.angular.z = 0.2
         self.publisher.publish(twist)
         
+    def publish_wall_marker(self, point1, point2):
+        marker = Marker()
+        marker.header.frame_id = 'base_link'
+        marker.type = Marker.LINE_LIST
+        marker.action = Marker.ADD
+
+        marker.scale.x = 0.01 
+        marker.color.a = 1.0
+        marker.color.r = 1.0  
+
+        marker.points.append(point1)
+        marker.points.append(point2)
+
+        self.marker_publisher.publish(marker)
 
     def process_scan(self, msg):
         '''
@@ -82,6 +99,21 @@ class WallFollowing(Node):
         #Uses to angles to construct a wall between those two points if there is a line to draw between the two
         ranges_var = msg.ranges
         if ranges_var[left_low] != 0 and ranges_var[left_high] != 0:
+            x1 = ranges_var[left_low] * math.cos(math.radians(left_low))
+            y1 = ranges_var[left_low] * math.sin(math.radians(left_low))
+
+            x2 = ranges_var[left_high] * math.cos(math.radians(left_high))
+            y2 = ranges_var[left_high] * math.sin(math.radians(left_high))
+            point1 = Point()
+            point1.x = x1
+            point1.y = y1
+            point1.z = 0  
+
+            point2 = Point()
+            point2.x = x2
+            point2.y = y2
+            point2.z = 0
+            self.publish_wall_marker(point1, point2)
             if ranges_var[90] > 0.15 and ranges_var != 0:
                 self.state = 2
             elif ranges_var[90] < 0.1 and ranges_var != 0:
