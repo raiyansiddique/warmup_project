@@ -7,7 +7,7 @@ from rclpy.qos import qos_profile_sensor_data
 class PersonFollowing(Node):
     """ Class for Person Following """
     def __init__(self):
-        super().__init__('person following')
+        super().__init__('person_following')
         # the run_loop adjusts the robot's velocity based on latest laser data
         self.create_timer(0.1, self.run_loop)
         self.create_subscription(LaserScan, 'scan', self.process_scan, qos_profile=qos_profile_sensor_data)
@@ -28,7 +28,7 @@ class PersonFollowing(Node):
             self.left()
         elif self.state == 3:
             self.right()
-        else:
+        elif self.state == 4:
             self.stop()
 
     def forward(self):
@@ -90,6 +90,8 @@ class PersonFollowing(Node):
         Args:
             msg: Topic message for lidar scan
         '''
+
+
         #Extracts the ranges from the message
         ranges_var = msg.ranges
         #Finds the value of the object closest to the neato excluding 0s
@@ -97,16 +99,28 @@ class PersonFollowing(Node):
         #Finds the angle at which the minimum value is at
         min_index = ranges_var.index(ranges_min_value)
         #If the person is to the right of the neato rotate and move forward right
-        if ranges_min_value < 0.1:
+        # if min_index < 15 or min_index > 345:
+        #     if ranges_min_value < 0.05:
+        #         self.state = 4
+        # else: 
+        #     if min_index >= 15 and min_index <= 180:
+        #         self.state = 3
+        #     #If the person is to the left of the neato rotate and move forward left
+        #     elif min_index >= 181 and min_index <= 345:
+        #         self.state = 2
+        #     else:
+        #         self.state = 1
+
+
+        if (min_index < 15 and ranges_min_value < 0.1) or (min_index > 345 and ranges_min_value < 0.1):
             self.state = 4
-        else: 
-            if min_index >= 15 and min_index <= 180:
-                self.state = 3
-            #If the person is to the left of the neato rotate and move forward left
-            elif min_index >= 181 and min_index <= 345:
-                self.state = 2
-            else:
-                self.state = 1
+        elif min_index >= 15 and min_index <= 180:
+            self.state = 3
+        #If the person is to the left of the neato rotate and move forward left
+        elif min_index >= 181 and min_index <= 345:
+            self.state = 2
+        else:
+            self.state = 1
 
 
 def main(args=None):
