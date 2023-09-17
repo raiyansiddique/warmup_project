@@ -79,7 +79,7 @@ class WallFollowing(Node):
 
         marker.scale.x = 0.01 
         marker.color.a = 1.0
-        marker.color.r = 1.0  
+        marker.color.g = 1.0  
 
         marker.points.append(point1)
         marker.points.append(point2)
@@ -107,22 +107,28 @@ class WallFollowing(Node):
             point1 = Point()
             point1.x = x1
             point1.y = y1
-            point1.z = 0  
+            point1.z = 0.0  
 
             point2 = Point()
             point2.x = x2
             point2.y = y2
-            point2.z = 0
+            point2.z = 0.0
             self.publish_wall_marker(point1, point2)
-            if ranges_var[90] > 0.15 and ranges_var != 0:
-                self.state = 2
-            elif ranges_var[90] < 0.1 and ranges_var != 0:
+            #print(ranges_var[90])
+            if ranges_var[90] > 0.5 and ranges_var != 0:
+                print('w')
                 self.state = 3
+            elif ranges_var[90] < 0.55 and ranges_var != 0:
+                self.state = 2
+                print('l')
             elif ranges_var[left_low] - ranges_var[left_high] > 0.05:
                 self.state = 3
+                print('x')
             elif ranges_var[left_low] - ranges_var[left_high] < -0.05:
                 self.state = 2
+                print('z')
             else:
+                print('y')
                 self.state = 1
 
 def main(args=None):

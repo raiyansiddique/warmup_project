@@ -112,7 +112,7 @@ class PersonFollowing(Node):
         #         self.state = 1
 
 
-        if (min_index < 15 and ranges_min_value < 0.1) or (min_index > 345 and ranges_min_value < 0.1):
+        if (min_index < 90 and ranges_min_value < 0.5) or (min_index > 270 and ranges_min_value < 0.5):
             self.state = 4
         elif min_index >= 15 and min_index <= 180:
             self.state = 3
