@@ -70,14 +70,14 @@ class WallFollowing(Node):
         twist.angular.y = 0.0
         twist.angular.z = 0.2
         self.publisher.publish(twist)
-        
+
     def publish_wall_marker(self, point1, point2):
         marker = Marker()
         marker.header.frame_id = 'base_link'
         marker.type = Marker.LINE_LIST
         marker.action = Marker.ADD
 
-        marker.scale.x = 0.01 
+        marker.scale.x = 0.1
         marker.color.a = 1.0
         marker.color.g = 1.0  
 
@@ -114,26 +114,18 @@ class WallFollowing(Node):
             point2.y = y2
             point2.z = 0.0
             self.publish_wall_marker(point1, point2)
-            #print(ranges_var[90])
-            if ranges_var[90] > 0.5 and ranges_var != 0:
-                print('w')
-                self.state = 3
-            elif ranges_var[90] < 0.55 and ranges_var != 0:
+            if any(x < 0.3 and x != 0 for x in ranges_var[80:100]):
                 self.state = 2
-                print('l')
             elif ranges_var[left_low] - ranges_var[left_high] > 0.05:
                 self.state = 3
-                print('x')
             elif ranges_var[left_low] - ranges_var[left_high] < -0.05:
                 self.state = 2
-                print('z')
             else:
-                print('y')
                 self.state = 1
-
 def main(args=None):
     rclpy.init(args=args)
     node = WallFollowing()
+    print(node)
     rclpy.spin(node)
     rclpy.shutdown()
 
