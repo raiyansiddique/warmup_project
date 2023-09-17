@@ -19,15 +19,15 @@ class WallFollowing(Node):
         '''
         Using the state, drive the robot one of 3 directions
         1: Forward
-        2: Rotate Left
-        3: Rotate Right
+        2: Rotate right
+        3: Rotate left
         '''
         if self.state == 1:
             self.forward()
         elif self.state == 2:
-            self.left()
-        elif self.state == 3:
             self.right()
+        elif self.state == 3:
+            self.left()
 
     def forward(self):
         '''
@@ -52,7 +52,7 @@ class WallFollowing(Node):
         twist.linear.z = 0.0
         twist.angular.x = 0.0
         twist.angular.y = 0.0
-        twist.angular.z = 0.2
+        twist.angular.z = -0.2
         self.publisher.publish(twist)
 
     def left(self):
@@ -65,7 +65,7 @@ class WallFollowing(Node):
         twist.linear.z = 0.0
         twist.angular.x = 0.0
         twist.angular.y = 0.0
-        twist.angular.z = -0.2
+        twist.angular.z = 0.2
         self.publisher.publish(twist)
         
 
@@ -82,7 +82,11 @@ class WallFollowing(Node):
         #Uses to angles to construct a wall between those two points if there is a line to draw between the two
         ranges_var = msg.ranges
         if ranges_var[left_low] != 0 and ranges_var[left_high] != 0:
-            if ranges_var[left_low] - ranges_var[left_high] > 0.05:
+            if ranges_var[90] > 0.15 and ranges_var != 0:
+                self.state = 2
+            elif ranges_var[90] < 0.1 and ranges_var != 0:
+                self.state = 3
+            elif ranges_var[left_low] - ranges_var[left_high] > 0.05:
                 self.state = 3
             elif ranges_var[left_low] - ranges_var[left_high] < -0.05:
                 self.state = 2

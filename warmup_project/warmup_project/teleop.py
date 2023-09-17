@@ -64,7 +64,7 @@ class Teleop(Node):
         twist.linear.z = 0.0
         twist.angular.x = 0.0
         twist.angular.y = 0.0
-        twist.angular.z = 0.2
+        twist.angular.z = -0.2
         self.publisher.publish(twist)
         
     def backward(self):
@@ -90,7 +90,7 @@ class Teleop(Node):
         twist.linear.z = 0.0
         twist.angular.x = 0.0
         twist.angular.y = 0.0
-        twist.angular.z = -0.2
+        twist.angular.z = 0.2
         self.publisher.publish(twist)
 
 def main(args=None):
@@ -103,14 +103,13 @@ def main(args=None):
         key = getKey()
         #Use wasd to move and rotate the robot forward and f to stop
         if key == 'w':
-            print("forw")
             node.forward()
         elif key =='s':
             node.backward()
         elif key == 'd':
-            node.left()
-        elif key == 'a':
             node.right()
+        elif key == 'a':
+            node.left()
         elif key == 'f':
             node.stop()
         time.sleep(0.05)

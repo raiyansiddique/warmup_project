@@ -102,7 +102,7 @@ class FiniteStateController(Node):
         ranges_min_value = min([num for num in ranges_var if num != 0])
         min_index = ranges_var.index(ranges_min_value)
         print(min_index)
-        if ranges_min_value > 0.25:
+        if ranges_min_value > 0.05:
             if min_index >= 15 and min_index <= 180:
                 self.state = 3
             elif min_index >= 181 and min_index <= 345:
