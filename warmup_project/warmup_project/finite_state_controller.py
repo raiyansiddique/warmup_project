@@ -25,6 +25,7 @@ class FiniteStateController(Node):
         # target_distance is the desired distance to the obstacle in front
         self.angular_vel = 3.14/4 * 1.035
         self.state = 1
+        self.rotation = 0
     def run_loop(self):
         msg = Twist()
         # print(self.state)
@@ -73,15 +74,10 @@ class FiniteStateController(Node):
         self.publisher.publish(twist)
 
     def rightAvoid(self):
-        twist = Twist()
-        twist.linear.x = 0.0
-        twist.linear.y = 0.0
-        twist.linear.z = 0.0
-        twist.angular.x = 0.0
-        twist.angular.y = 0.0
-        twist.angular.z = self.angular_vel
-        self.publisher.publish(twist)
-    def leftAvoid(self):
+        '''
+        Sets robot to rotate right
+        '''
+        self.rotation -= self.angular_vel *0.1
         twist = Twist()
         twist.linear.x = 0.0
         twist.linear.y = 0.0
@@ -90,6 +86,22 @@ class FiniteStateController(Node):
         twist.angular.y = 0.0
         twist.angular.z = -self.angular_vel
         self.publisher.publish(twist)
+        time.sleep(1)
+
+    def leftAvoid(self):
+        '''
+        Sets robot to rotate left
+        '''
+        self.rotation += self.angular_vel *0.1
+        twist = Twist()
+        twist.linear.x = 0.0
+        twist.linear.y = 0.0
+        twist.linear.z = 0.0
+        twist.angular.x = 0.0
+        twist.angular.y = 0.0
+        twist.angular.z = self.angular_vel
+        self.publisher.publish(twist)
+        time.sleep(1)
 
 
         # self.vel_pub.publish(msg)
@@ -103,12 +115,23 @@ class FiniteStateController(Node):
         print(min_index)
         print(ranges_min_value)
         if ranges_min_value < 0.8:
-            if min_index >= 0 and min_index <= 90:
-                self.state = 5
-            elif min_index >= 270 and min_index <= 360:
-                self.state = 5
-            else:
-                self.state = 1
+            if ranges_min_value < 0.8:
+                #If the object is in the front of the neato then rotate left else move forward
+                if min_index >= 0 and min_index <= 40:
+                    self.prev_state = self.state
+                    self.state = 5
+                elif min_index >= 320 and min_index <= 360:
+                    self.prev_state = self.state
+                    self.state = 4
+                else:
+                    self.state = 1
+            else: 
+                if self.rotation < 0:
+                    self.state = 4
+                elif self.rotation >0:
+                    self.state = 5
+                else:
+                    self.state = 1
         else:
             if min_index >= 15 and min_index <= 180:
                 self.state = 3
