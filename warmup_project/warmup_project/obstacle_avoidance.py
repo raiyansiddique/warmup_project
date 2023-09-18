@@ -9,7 +9,7 @@ class ObstacleAvoid(Node):
     Class for Obstacle Avoidance using ROS
     """
     def __init__(self):
-        super().__init__('Obstacle Avoid')
+        super().__init__('Obstacle_Avoid')
         # The run_loop adjusts the robot's velocity based on latest laser data
         self.create_timer(0.1, self.run_loop)
         #Subscribes to the lidar scan topic
@@ -40,7 +40,7 @@ class ObstacleAvoid(Node):
         Sets the robot's forward velocity to 0.2 m/s
         '''
         twist = Twist()
-        twist.linear.x = 0.2
+        twist.linear.x = 0.1
         twist.linear.y = 0.0
         twist.linear.z = 0.0
         twist.angular.x = 0.0
@@ -53,7 +53,7 @@ class ObstacleAvoid(Node):
         Sets robot to rotate right
         '''
         twist = Twist()
-        twist.linear.x = 0.0
+        twist.linear.x = 0.1
         twist.linear.y = 0.0
         twist.linear.z = 0.0
         twist.angular.x = 0.0
@@ -65,7 +65,7 @@ class ObstacleAvoid(Node):
         Sets robot to rotate left
         '''
         twist = Twist()
-        twist.linear.x = 0.0
+        twist.linear.x = 0.1
         twist.linear.y = 0.0
         twist.linear.z = 0.0
         twist.angular.x = 0.0
@@ -84,19 +84,22 @@ class ObstacleAvoid(Node):
         # extracts the distances away the neato is from some object at each angle
         ranges_var = msg.ranges
         #Finds the angle where there is something closest to the neato, excluding 0s
-        ranges_min_value = min([num for num in ranges_var if num != 0])
+        try:
+            ranges_min_value = min([num for num in ranges_var if num != 0])
+            min_index = ranges_var.index(ranges_min_value)
+        except:
+            ranges_min_value = 1.1
         #The minimum index gives us the angle at which the object closest is.
-        min_index = ranges_var.index(ranges_min_value)
         #If something is 0.7 meters or closer then it should see if it needs to rotate
         #Else go forward
-        if ranges_min_value < 0.7:
+        if ranges_min_value < 1:
             #If the object is in the front of the neato then rotate left else move forward
             if min_index >= 0 and min_index <= 90:
                 self.state = 2
             elif min_index >= 270 and min_index <= 360:
                 self.state = 2
             else:
-                self.state = 1
+                self.state = 3
         else: 
             self.state = 1
 
