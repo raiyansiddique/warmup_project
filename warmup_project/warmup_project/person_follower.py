@@ -90,27 +90,13 @@ class PersonFollowing(Node):
         Args:
             msg: Topic message for lidar scan
         '''
-
-
+        
         #Extracts the ranges from the message
         ranges_var = msg.ranges
         #Finds the value of the object closest to the neato excluding 0s
         ranges_min_value = min([num for num in ranges_var if num != 0])
         #Finds the angle at which the minimum value is at
         min_index = ranges_var.index(ranges_min_value)
-        #If the person is to the right of the neato rotate and move forward right
-        # if min_index < 15 or min_index > 345:
-        #     if ranges_min_value < 0.05:
-        #         self.state = 4
-        # else: 
-        #     if min_index >= 15 and min_index <= 180:
-        #         self.state = 3
-        #     #If the person is to the left of the neato rotate and move forward left
-        #     elif min_index >= 181 and min_index <= 345:
-        #         self.state = 2
-        #     else:
-        #         self.state = 1
-
 
         if (min_index < 90 and ranges_min_value < 0.5) or (min_index > 270 and ranges_min_value < 0.5):
             self.state = 4

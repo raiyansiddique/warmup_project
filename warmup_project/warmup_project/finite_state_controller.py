@@ -6,10 +6,7 @@ from rclpy.parameter import Parameter
 from rcl_interfaces.msg import SetParametersResult
 from rclpy.qos import qos_profile_sensor_data
 import time
-# 1 = Wall Left
-# 2 = Wall Right
-# 3 = Rotate to Left Wall
-# 4 = Rotate to Right Wall
+
 class FiniteStateController(Node):
     """ This class wraps the basic functionality of the node """
     def __init__(self):
@@ -114,9 +111,10 @@ class FiniteStateController(Node):
         min_index = ranges_var.index(ranges_min_value)
         print(min_index)
         print(ranges_min_value)
+        # if the neato detects an object within 0.8 meters it will
+        # object avoid.
         if ranges_min_value < 0.8:
             if ranges_min_value < 0.8:
-                #If the object is in the front of the neato then rotate left else move forward
                 if min_index >= 0 and min_index <= 40:
                     self.prev_state = self.state
                     self.state = 5
@@ -124,14 +122,18 @@ class FiniteStateController(Node):
                     self.prev_state = self.state
                     self.state = 4
                 else:
+                    # moves forward
                     self.state = 1
-            else: 
+            else:
+                # once the neato is far enough away it will re-orient.
                 if self.rotation < 0:
                     self.state = 4
                 elif self.rotation >0:
                     self.state = 5
                 else:
                     self.state = 1
+        # if no object is detected it will follow the closest object
+        # it detects.
         else:
             if min_index >= 15 and min_index <= 180:
                 self.state = 3
@@ -139,9 +141,6 @@ class FiniteStateController(Node):
                 self.state = 2
             else:
                 self.state = 1
-
-
-        
 
 
 def main(args=None):
