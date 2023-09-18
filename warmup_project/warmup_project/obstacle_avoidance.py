@@ -3,6 +3,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 from rclpy.qos import qos_profile_sensor_data
+import time 
 
 class ObstacleAvoid(Node):
     """
@@ -17,9 +18,10 @@ class ObstacleAvoid(Node):
         #Sets up publisher to cmd_vel 
         self.publisher = self.create_publisher(Twist, 'cmd_vel', 10)
         #Sets angular velocity to pi/4 rads per second with a scaling factor
-        self.angular_vel = 3.14/4 * 1.035
+        self.angular_vel = 3.14/4
         #Sets the initial state to 1
         self.state = 1
+        self.rotation = 0
     
     def run_loop(self):
         '''
@@ -52,26 +54,30 @@ class ObstacleAvoid(Node):
         '''
         Sets robot to rotate right
         '''
+        self.rotation -= self.angular_vel *0.1
         twist = Twist()
-        twist.linear.x = 0.1
-        twist.linear.y = 0.0
-        twist.linear.z = 0.0
-        twist.angular.x = 0.0
-        twist.angular.y = 0.0
-        twist.angular.z = self.angular_vel
-        self.publisher.publish(twist)
-    def left(self):
-        '''
-        Sets robot to rotate left
-        '''
-        twist = Twist()
-        twist.linear.x = 0.1
+        twist.linear.x = 0.0
         twist.linear.y = 0.0
         twist.linear.z = 0.0
         twist.angular.x = 0.0
         twist.angular.y = 0.0
         twist.angular.z = -self.angular_vel
         self.publisher.publish(twist)
+        time.sleep(1)
+    def left(self):
+        '''
+        Sets robot to rotate left
+        '''
+        self.rotation += self.angular_vel *0.1
+        twist = Twist()
+        twist.linear.x = 0.0
+        twist.linear.y = 0.0
+        twist.linear.z = 0.0
+        twist.angular.x = 0.0
+        twist.angular.y = 0.0
+        twist.angular.z = self.angular_vel
+        self.publisher.publish(twist)
+        time.sleep(1)
         
 
     def process_scan(self, msg):
@@ -92,16 +98,23 @@ class ObstacleAvoid(Node):
         #The minimum index gives us the angle at which the object closest is.
         #If something is 0.7 meters or closer then it should see if it needs to rotate
         #Else go forward
-        if ranges_min_value < 1:
+        if ranges_min_value < 0.6:
             #If the object is in the front of the neato then rotate left else move forward
-            if min_index >= 0 and min_index <= 90:
-                self.state = 2
-            elif min_index >= 270 and min_index <= 360:
+            if min_index >= 0 and min_index <= 40:
+                self.prev_state = self.state
+                self.state = 3
+            elif min_index >= 320 and min_index <= 360:
+                self.prev_state = self.state
                 self.state = 2
             else:
-                self.state = 3
+                self.state = 1
         else: 
-            self.state = 1
+            if self.rotation < 0:
+                self.state = 2
+            elif self.rotation >0:
+                self.state = 3
+            else:
+                self.state = 1
 
         
 
