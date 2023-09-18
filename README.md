@@ -89,6 +89,19 @@ Given more time, we could implement the forces algorithm that was shown in the a
 
 ## Finite State Machine
 
+For the finite state machine, we integrated the logics of obstacle avoidance and person-following. In our previous code, we had already utilized states to manage the robot's logic. For this challenge, we added additional states specific to each of the prior behaviors. This allowed us to maintain a similar logic but expand the number of states we employed. One of the reasons we combined these two behaviors was because their parameters complemented each other. The person-following behavior would stop within a certain distance, while the obstacle avoidance would adjust its orientation and navigate around an object once it came within a certain distance.
+
+The resulting behavior was quite intriguing, almost giving the robot a semblance of personality. It would follow a detected person, and upon coming very close, it would turn left or right to navigate around them. Once it reached a certain distance away, the robot would then turn back and resume following the person.
+
+### Control
+
+The topic communication is the same as the wall following, person following and obstacle avoidance behaviors. The Neato communicates the lidar scan through `scan`, which effects what is sent through the `cmd_vel` topic which changes where the Neato is. 
+
+![Alt Text](media/sm_wf.png)
+
+### Future Improvements
+
+For future enhancements, we could refine both the person-following and wall-following behaviors to ensure greater robustness in dynamic environments. Another area for improvement is the code structure within our finite state machine. By implementing best coding practices and optimizing parameters for each of the two distinct behaviors, we can further enhance performance. Additionally, we could delve deeper into our state structure. It would be interesting to see how much more we can streamline the code by further extracting into state logic.
 
 ## Conclusion
 
