@@ -72,6 +72,12 @@ class WallFollowing(Node):
         self.publisher.publish(twist)
 
     def publish_wall_marker(self, point1, point2):
+        '''
+        Draws the wall in rviz
+        Args:
+            point1 (Point): first point that defines the wall
+            point2 (Point): second point that defines the wall
+        '''
         marker = Marker()
         marker.header.frame_id = 'base_link'
         marker.type = Marker.LINE_LIST
@@ -99,6 +105,7 @@ class WallFollowing(Node):
         #Uses to angles to construct a wall between those two points if there is a line to draw between the two
         ranges_var = msg.ranges
         if ranges_var[left_low] != 0 and ranges_var[left_high] != 0:
+            #Rviz visualization code
             x1 = ranges_var[left_low] * math.cos(math.radians(left_low))
             y1 = ranges_var[left_low] * math.sin(math.radians(left_low))
 
@@ -114,8 +121,10 @@ class WallFollowing(Node):
             point2.y = y2
             point2.z = 0.0
             self.publish_wall_marker(point1, point2)
+            #Maintains distance away from wall and else follows the wall or goes forward
             if any(x < 0.3 and x != 0 for x in ranges_var[80:100]):
                 self.state = 2
+            #Adjusts itself to be as close to parallel to the wall as possible using difference of the front and back of the Neato
             elif ranges_var[left_low] - ranges_var[left_high] > 0.05:
                 self.state = 3
             elif ranges_var[left_low] - ranges_var[left_high] < -0.05:

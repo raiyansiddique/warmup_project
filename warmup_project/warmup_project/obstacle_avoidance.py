@@ -96,7 +96,7 @@ class ObstacleAvoid(Node):
         except:
             ranges_min_value = 1.1
         #The minimum index gives us the angle at which the object closest is.
-        #If something is 0.7 meters or closer then it should see if it needs to rotate
+        #If something is 0.6 meters or closer then it should see if it needs to rotate
         #Else go forward
         if ranges_min_value < 0.6:
             #If the object is in the front of the neato then rotate left else move forward
