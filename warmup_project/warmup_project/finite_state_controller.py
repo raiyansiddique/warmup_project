@@ -8,7 +8,7 @@ from rclpy.qos import qos_profile_sensor_data
 import time
 
 class FiniteStateController(Node):
-    """ This class wraps the basic functionality of the node """
+    """ Finite State Machine Controller """
     def __init__(self):
         super().__init__('wall_approach')
         # the run_loop adjusts the robot's velocity based on latest laser data
@@ -24,8 +24,9 @@ class FiniteStateController(Node):
         self.state = 1
         self.rotation = 0
     def run_loop(self):
-        msg = Twist()
-        # print(self.state)
+        '''
+        State machine controller
+        '''
 
         if self.state == 1:
             self.forward()
@@ -38,9 +39,10 @@ class FiniteStateController(Node):
         elif self.state == 5:
             self.rightAvoid()
 
-        # Your logic here!
-
     def forward(self):
+        '''
+        Sets robot to move forward
+        '''
         twist = Twist()
         twist.linear.x = 0.2
         twist.linear.y = 0.0
@@ -51,6 +53,9 @@ class FiniteStateController(Node):
         self.publisher.publish(twist)
 
     def rightPerson(self):
+        '''
+        Sets robot to rotate right
+        '''
         twist = Twist()
         twist.linear.x = 0.05
         twist.linear.y = 0.0
@@ -61,6 +66,9 @@ class FiniteStateController(Node):
         self.publisher.publish(twist)
 
     def leftPerson(self):
+        '''
+        Sets robot to rotate left
+        '''
         twist = Twist()
         twist.linear.x = 0.05
         twist.linear.y = 0.0
@@ -105,7 +113,12 @@ class FiniteStateController(Node):
         
 
     def process_scan(self, msg):
+        '''
+        Controller for state machine defined in run_loop
 
+        Args:
+            msg: Topic message for lidar scan
+        '''
         ranges_var = msg.ranges
         ranges_min_value = min([num for num in ranges_var if num != 0])
         min_index = ranges_var.index(ranges_min_value)

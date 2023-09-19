@@ -35,6 +35,8 @@ Given more time, we could use the odometry of the robot to create a more accurat
 
 ## Wall Following
 
+![Alt Text](media/wall.gif)
+
 For the wall following task, we are supposed to have NEATOs movement be parallel to a wall. To keep the task simpler, we have it follow a wall to the left of the robot. We subscribe to the scan topic to get the lidar scan data from the neato. Then we take the measurement at 90 degrees to see the distance the neato is from the wall. If it is farther than 0.3 away from the wall then it uses the 45 degree and 135 degree measurement to follow the wall. If it is not within that range then the robot tries to get back into the range of that wall by rotating the direction it needs to while moving forward at the same time. 
 
 The wall following logic is fairly simple. If both the 45 and 135 degree measurements are non zero, we subtract them. If the difference is less than 0.05 meters we know that the front of the neato is closer to the wall the back, so the robot needs to rotate right and move forward. If the opposite is true then the robot needs to rotate left and forward. 
@@ -57,6 +59,9 @@ Given more time, we could create a more robust and accurate wall detection algor
 
 ## Person Follower 
 
+![Alt Text](media/person.gif)
+
+
 For the person follower problem, we are tasked with having the Neato follow a person. Our approach is fairly simple, we have the Neato follow the closest object that is not 0.5 meters away. If the nearest object is 0.5 meters or closer, then the Neato will stop. If the person is not directly in front of the neato the neato will try to rotate towards the person. 
 
 ![Alt Text](media/person.png)
@@ -72,6 +77,9 @@ The topic communication is the same as the wall following task. The Neato commun
 Given more time, we could create a more robust and reactive person follower that could match the speed of the person. Because our Neato is slow to allow for it to accurately find a person, the effectiveness of it as a person follower is minimzed. However, if it can also match the velocity of the person, it would overcome some of those hurdles. 
 
 ## Obstacle Avoidance
+
+![Alt Text](media/obstacle.gif)
+
 
 For the obstacle avoidance problem, we are tasked with having the Neato avoid obstacles, while moving forward. To tackle this task, we broke it up into two tasks, mainting the forward orientation and avoiding obstacles. First, we tackled avoiding obstacles by finding the angle where the object is the closest and within 0.6 meters. If the obstacle is within 320 to 360 degrees the Neato moves right and if the obstacle is within 0 to 40 degrees then the Neato moves left. If the object is close to the neato but not in that range then the Neato moves forward. 
 
@@ -92,6 +100,8 @@ Given more time, we could implement the forces algorithm that was shown in the a
 For the finite state machine, we integrated the logics of obstacle avoidance and person-following. In our previous code, we had already utilized states to manage the robot's logic. For this challenge, we added additional states specific to each of the prior behaviors. This allowed us to maintain a similar logic but expand the number of states we employed. One of the reasons we combined these two behaviors was because their parameters complemented each other. The person-following behavior would stop within a certain distance, while the obstacle avoidance would adjust its orientation and navigate around an object once it came within a certain distance.
 
 The resulting behavior was quite intriguing, almost giving the robot a semblance of personality. It would follow a detected person, and upon coming very close, it would turn left or right to navigate around them. Once it reached a certain distance away, the robot would then turn back and resume following the person.
+
+![Alt text](media/fsm.png)
 
 ### Control
 
